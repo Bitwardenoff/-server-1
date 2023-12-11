@@ -11,7 +11,7 @@ on:
       - 'util/Migrator/**'
   push:
     branches:
-      - 'master'
+      - 'main'
       - 'rc'
     paths:
       - 'src/Sql/**'

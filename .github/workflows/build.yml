@@ -279,7 +279,7 @@ jobs:
           REGISTRY: bitwardenqa.azurecr.io
         run: |
           IMAGE_TAG=$(echo "${GITHUB_REF:11}" | sed "s#/#-#g")  # slash safe branch name
-          if [[ "$IMAGE_TAG" == "master" ]]; then
+          if [[ "$IMAGE_TAG" == "main" ]]; then
             IMAGE_TAG=dev
           fi
 
@@ -294,7 +294,7 @@ jobs:
       - name: Login to Azure - Prod Subscription
         if: |
           contains(matrix.docker_repos, 'bitwarden')
-          && (github.ref == 'refs/heads/master' ||
+          && (github.ref == 'refs/heads/main' ||
             github.ref == 'refs/heads/rc' ||
             github.ref == 'refs/heads/hotfix-rc')
         uses: Azure/login@1f63701bf3e6892515f1b7ce2d2bf1708b46beaf
@@ -304,7 +304,7 @@ jobs:
       - name: Retrieve secrets
         if: |
           contains(matrix.docker_repos, 'bitwarden')
-          && (github.ref == 'refs/heads/master' ||
+          && (github.ref == 'refs/heads/main' ||
             github.ref == 'refs/heads/rc' ||
             github.ref == 'refs/heads/hotfix-rc')
         id: retrieve-secrets
@@ -319,7 +319,7 @@ jobs:
       - name: Log into Docker
         if: |
           contains(matrix.docker_repos, 'bitwarden')
-          && (github.ref == 'refs/heads/master' ||
+          && (github.ref == 'refs/heads/main' ||
             github.ref == 'refs/heads/rc' ||
             github.ref == 'refs/heads/hotfix-rc')
         env:
@@ -330,7 +330,7 @@ jobs:
       - name: Setup Docker Trust
         if: |
           contains(matrix.docker_repos, 'bitwarden')
-          && (github.ref == 'refs/heads/master' ||
+          && (github.ref == 'refs/heads/main' ||
             github.ref == 'refs/heads/rc' ||
             github.ref == 'refs/heads/hotfix-rc')
         env:
@@ -346,7 +346,7 @@ jobs:
       - name: Tag and Push RC to Docker Hub
         if: |
           contains(matrix.docker_repos, 'bitwarden')
-          && (github.ref == 'refs/heads/master' ||
+          && (github.ref == 'refs/heads/main' ||
             github.ref == 'refs/heads/rc' ||
             github.ref == 'refs/heads/hotfix-rc')
         env:
@@ -354,7 +354,7 @@ jobs:
           REGISTRY: bitwarden
         run: |
           IMAGE_TAG=$(echo "${GITHUB_REF:11}" | sed "s#/#-#g")  # slash safe branch name
-          if [[ "$IMAGE_TAG" == "master" ]]; then
+          if [[ "$IMAGE_TAG" == "main" ]]; then
             IMAGE_TAG=dev
           fi
 
@@ -365,7 +365,7 @@ jobs:
       - name: Log out of Docker and disable Docker Notary
         if: |
           contains(matrix.docker_repos, 'bitwarden')
-          && (github.ref == 'refs/heads/master' ||
+          && (github.ref == 'refs/heads/main' ||
             github.ref == 'refs/heads/rc' ||
             github.ref == 'refs/heads/hotfix-rc')
         run: |
@@ -384,7 +384,7 @@ jobs:
         run: dotnet tool restore
 
       - name: Make Docker stub
-        if: github.ref == 'refs/heads/master' ||
+        if: github.ref == 'refs/heads/main' ||
           github.ref == 'refs/heads/rc' ||
           github.ref == 'refs/heads/hotfix-rc'
         run: |
@@ -406,11 +406,11 @@ jobs:
           cd docker-stub; zip -r ../docker-stub.zip *; cd ..
 
       - name: Make Docker stub checksum
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/rc' || github.ref == 'refs/heads/hotfix-rc'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/rc' || github.ref == 'refs/heads/hotfix-rc'
         run: sha256sum docker-stub.zip > docker-stub-sha256.txt
 
       - name: Upload Docker stub artifact
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/rc' || github.ref == 'refs/heads/hotfix-rc'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/rc' || github.ref == 'refs/heads/hotfix-rc'
         uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535
         with:
           name: docker-stub.zip
@@ -418,7 +418,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload Docker stub checksum artifact
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/rc' || github.ref == 'refs/heads/hotfix-rc'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/rc' || github.ref == 'refs/heads/hotfix-rc'
         uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535
         with:
           name: docker-stub-sha256.txt
@@ -464,7 +464,7 @@ jobs:
     steps:
       - name: Check if any job failed
         if: |
-          github.ref == 'refs/heads/master'
+          github.ref == 'refs/heads/main'
           || github.ref == 'refs/heads/rc'
           || github.ref == 'refs/heads/hotfix-rc'
         env:

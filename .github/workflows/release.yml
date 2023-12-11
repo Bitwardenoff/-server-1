@@ -100,7 +100,7 @@ jobs:
         with:
           workflow: build.yml
           workflow_conclusion: success
-          branch: master
+          branch: main 
           artifacts: ${{ matrix.name }}.zip
 
       - name: Login to Azure
@@ -383,7 +383,7 @@ jobs:
         with:
           workflow: build.yml
           workflow_conclusion: success
-          branch: master
+          branch: main
           artifacts: "docker-stub.zip,
             docker-stub-sha256.txt,
             swagger.json"
